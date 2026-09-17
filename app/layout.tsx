@@ -38,6 +38,10 @@ export const metadata: Metadata = {
   creator: "Amir Suhail",
   publisher: "Amir Suhail",
 
+  verification: {
+    google: "n-1_L4YTTQZo0ihXyD5P4rgdpsVgPGwLpe_9kiUO95w",
+  },
+
   openGraph: {
     type: "website",
     locale: "en_US",
