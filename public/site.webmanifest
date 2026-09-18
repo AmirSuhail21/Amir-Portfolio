@@ -1,0 +1,21 @@
+{
+  "name": "Amir Suhail | Full-Stack Web Developer",
+  "short_name": "Amir Suhail",
+  "description": "Portfolio of Amir Suhail, a Full-Stack Web Developer.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0c10",
+  "theme_color": "#0d0c10",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
