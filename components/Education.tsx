@@ -14,7 +14,7 @@ export default async function Education() {
   const { data: education, error } = await supabase
     .from("education")
     .select("id, period, title, institution, description")
-    .order("period", { ascending: false });
+    .order("created_at", { ascending: true });
 
   if (error) {
     console.error("Education fetch error:", error.message);
@@ -26,56 +26,83 @@ export default async function Education() {
   return (
     <section
       id="education"
-      className="scroll-mt-24 border-t border-[var(--border)] py-20 sm:py-28"
+      className="relative scroll-mt-24 overflow-hidden border-t border-[var(--border)] py-24 sm:py-32"
     >
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-            Education
-          </p>
+      {/* Ambient glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-40 bottom-20 h-80 w-80 rounded-full bg-[var(--accent)]/5 blur-3xl"
+      />
 
-          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            My learning journey.
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        {/* Heading */}
+        <div className="max-w-3xl">
+          <div className="flex items-center gap-3">
+            <span className="h-px w-8 bg-[var(--accent)]" />
+
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--accent)]">
+              Education
+            </p>
+          </div>
+
+          <h2 className="mt-5 text-4xl font-black tracking-[-0.04em] sm:text-5xl">
+            My learning{" "}
+            <span className="text-[var(--accent)]">journey.</span>
           </h2>
 
-          <p className="mt-4 text-base leading-8 text-[var(--muted)]">
-            My academic background and learning milestones.
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
+            Academic milestones and experiences that have shaped my technical
+            foundation.
           </p>
         </div>
 
+        {/* Timeline */}
         {items.length > 0 ? (
-          <div className="relative mt-12">
-            <div className="absolute bottom-0 left-[7px] top-0 hidden w-px bg-[var(--border)] sm:block" />
+          <div className="relative mt-14">
+            {/* Timeline line */}
+            <div
+              aria-hidden="true"
+              className="absolute bottom-5 left-[19px] top-5 hidden w-px bg-[var(--border)] sm:block"
+            />
 
-            <div className="space-y-8">
-              {items.map((item) => (
+            <div className="space-y-6">
+              {items.map((item, index) => (
                 <article
                   key={item.id}
-                  className="relative sm:pl-10"
+                  className="group relative sm:pl-14"
                 >
-                  <span className="absolute left-0 top-2 hidden h-4 w-4 rounded-full border-2 border-[var(--accent)] bg-[var(--background)] sm:block" />
+                  {/* Timeline dot */}
+                  <span className="absolute left-2.5 top-8 hidden h-4 w-4 rounded-full border-2 border-[var(--accent)] bg-[var(--background)] shadow-[0_0_0_5px_var(--background)] sm:block" />
 
-                  <div className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 sm:p-8">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                      <div>
-                        <h3 className="text-xl font-semibold">
+                  <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/35 hover:shadow-lg sm:p-8">
+                    <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="max-w-3xl">
+                        <div className="mb-3 flex items-center gap-2">
+                          <span className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+
+                          <span className="h-px w-5 bg-[var(--border)]" />
+                        </div>
+
+                        <h3 className="text-xl font-black tracking-tight sm:text-2xl">
                           {item.title}
                         </h3>
 
                         {item.institution && (
-                          <p className="mt-2 text-sm font-medium text-[var(--accent)]">
+                          <p className="mt-2 text-sm font-semibold text-[var(--accent)]">
                             {item.institution}
                           </p>
                         )}
                       </div>
 
-                      <span className="w-fit rounded-full border border-[var(--border)] px-3 py-1 text-xs font-medium text-[var(--muted)]">
+                      <span className="w-fit shrink-0 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2 text-xs font-bold text-[var(--muted)]">
                         {item.period}
                       </span>
                     </div>
 
                     {item.description && (
-                      <p className="mt-5 text-sm leading-7 text-[var(--muted)]">
+                      <p className="mt-6 max-w-3xl text-sm leading-7 text-[var(--muted)]">
                         {item.description}
                       </p>
                     )}
@@ -85,8 +112,12 @@ export default async function Education() {
             </div>
           </div>
         ) : (
-          <div className="mt-12 rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 text-center">
-            <p className="text-sm text-[var(--muted)]">
+          <div className="mt-14 rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-10 text-center shadow-sm">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--surface)] text-[var(--accent)]">
+              +
+            </div>
+
+            <p className="mt-4 text-sm font-semibold text-[var(--muted)]">
               Education details will be added soon.
             </p>
           </div>

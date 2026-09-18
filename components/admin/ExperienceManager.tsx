@@ -80,7 +80,9 @@ export default function ExperienceManager({ experience }: Props) {
 
       alert("Experience updated successfully.");
     } else {
-      const { error } = await supabase.from("experience").insert(payload);
+      const { error } = await supabase
+        .from("experience")
+        .insert(payload);
 
       if (error) {
         alert(error.message);
@@ -127,95 +129,72 @@ export default function ExperienceManager({ experience }: Props) {
   return (
     <div className="space-y-10">
       {/* Form */}
-      <section className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 sm:p-8">
+      <section className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-xl shadow-black/5 dark:shadow-black/20 sm:p-8">
         <div className="mb-7">
-          <h2 className="text-xl font-semibold">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--accent)]">
             {editingId ? "Edit Experience" : "Add Experience"}
+          </p>
+
+          <h2 className="mt-2 text-xl font-black tracking-tight text-[var(--foreground)]">
+            {editingId
+              ? "Update professional information"
+              : "Add professional information"}
           </h2>
 
-          <p className="mt-2 text-sm text-[var(--muted)]">
-            {editingId
-              ? "Update the selected experience."
-              : "Add a new professional experience to your portfolio."}
+          <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+            Keep your professional experience updated for the public
+            portfolio.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid gap-6 sm:grid-cols-2">
             {/* Period */}
-            <div>
-              <label
-                htmlFor="period"
-                className="mb-2 block text-sm font-medium"
-              >
-                Period
-              </label>
-
-              <input
-                id="period"
-                type="text"
-                value={period}
-                onChange={(event) => setPeriod(event.target.value)}
-                placeholder="2025 - Present"
-                className="w-full rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm outline-none transition focus:border-[var(--accent)]"
-              />
-            </div>
+            <FormField
+              id="experience-period"
+              label="Period"
+              value={period}
+              onChange={setPeriod}
+              placeholder="2025 - Present"
+              required
+            />
 
             {/* Title */}
-            <div>
-              <label
-                htmlFor="title"
-                className="mb-2 block text-sm font-medium"
-              >
-                Role / Title
-              </label>
-
-              <input
-                id="title"
-                type="text"
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                placeholder="Full-Stack Web Developer"
-                className="w-full rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm outline-none transition focus:border-[var(--accent)]"
-              />
-            </div>
+            <FormField
+              id="experience-title"
+              label="Role / Title"
+              value={title}
+              onChange={setTitle}
+              placeholder="Full-Stack Web Developer"
+              required
+            />
           </div>
 
           {/* Company */}
-          <div>
-            <label
-              htmlFor="company"
-              className="mb-2 block text-sm font-medium"
-            >
-              Company / Organization
-            </label>
-
-            <input
-              id="company"
-              type="text"
-              value={company}
-              onChange={(event) => setCompany(event.target.value)}
-              placeholder="Company name"
-              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm outline-none transition focus:border-[var(--accent)]"
-            />
-          </div>
+          <FormField
+            id="experience-company"
+            label="Company / Organization"
+            value={company}
+            onChange={setCompany}
+            placeholder="Company name"
+          />
 
           {/* Description */}
           <div>
             <label
-              htmlFor="description"
-              className="mb-2 block text-sm font-medium"
+              htmlFor="experience-description"
+              className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
             >
               Description
             </label>
 
             <textarea
-              id="description"
+              id="experience-description"
               value={description}
               onChange={(event) => setDescription(event.target.value)}
               placeholder="Describe your responsibilities, work and achievements..."
               rows={5}
-              className="w-full resize-y rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm leading-6 outline-none transition focus:border-[var(--accent)]"
+              className="w-full resize-y rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3.5 text-sm leading-6 text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
             />
           </div>
 
@@ -224,7 +203,7 @@ export default function ExperienceManager({ experience }: Props) {
             <button
               type="submit"
               disabled={loading}
-              className="rounded-full bg-[var(--foreground)] px-6 py-3 text-sm font-semibold text-[var(--background)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-2xl bg-[var(--foreground)] px-6 py-3 text-sm font-bold text-[var(--background)] transition-all duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-lg hover:shadow-black/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
                 ? "Saving..."
@@ -238,7 +217,7 @@ export default function ExperienceManager({ experience }: Props) {
                 type="button"
                 onClick={resetForm}
                 disabled={loading}
-                className="rounded-full border border-[var(--border)] px-6 py-3 text-sm font-semibold transition hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-2xl border border-[var(--border)] bg-[var(--background)] px-6 py-3 text-sm font-semibold text-[var(--muted)] transition-all duration-200 hover:border-[var(--accent)]/40 hover:text-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Cancel Edit
               </button>
@@ -250,11 +229,18 @@ export default function ExperienceManager({ experience }: Props) {
       {/* Existing Experience */}
       <section>
         <div className="mb-6">
-          <h2 className="text-xl font-semibold">Saved Experience</h2>
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
+            Saved Entries
+          </p>
+
+          <h2 className="mt-2 text-xl font-black tracking-tight text-[var(--foreground)]">
+            Saved Experience
+          </h2>
 
           <p className="mt-2 text-sm text-[var(--muted)]">
             {experience.length}{" "}
-            {experience.length === 1 ? "experience" : "experiences"} saved.
+            {experience.length === 1 ? "experience" : "experiences"}{" "}
+            saved.
           </p>
         </div>
 
@@ -263,20 +249,20 @@ export default function ExperienceManager({ experience }: Props) {
             {experience.map((item) => (
               <article
                 key={item.id}
-                className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 sm:p-8"
+                className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-6 transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--background)] sm:p-8"
               >
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <span className="inline-flex rounded-full border border-[var(--border)] px-3 py-1 text-xs font-medium text-[var(--muted)]">
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0">
+                    <span className="inline-flex rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--accent)]">
                       {item.period}
                     </span>
 
-                    <h3 className="mt-4 text-xl font-semibold">
+                    <h3 className="mt-4 text-xl font-black tracking-tight text-[var(--foreground)]">
                       {item.title}
                     </h3>
 
                     {item.company && (
-                      <p className="mt-2 text-sm font-medium text-[var(--accent)]">
+                      <p className="mt-2 text-sm font-semibold text-[var(--accent)]">
                         {item.company}
                       </p>
                     )}
@@ -293,7 +279,7 @@ export default function ExperienceManager({ experience }: Props) {
                       type="button"
                       onClick={() => startEdit(item)}
                       disabled={loading}
-                      className="rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold transition hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-50"
+                      className="rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-xs font-bold text-[var(--foreground)] transition-all duration-200 hover:border-[var(--accent)]/40 hover:text-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       Edit
                     </button>
@@ -302,7 +288,7 @@ export default function ExperienceManager({ experience }: Props) {
                       type="button"
                       onClick={() => handleDelete(item.id)}
                       disabled={loading}
-                      className="rounded-full border border-red-500/30 px-4 py-2 text-xs font-semibold text-red-500 transition hover:bg-red-500/10 disabled:opacity-50"
+                      className="rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-2.5 text-xs font-bold text-red-600 transition-all duration-200 hover:bg-red-500/10 dark:text-red-300 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       Delete
                     </button>
@@ -312,13 +298,54 @@ export default function ExperienceManager({ experience }: Props) {
             ))}
           </div>
         ) : (
-          <div className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 text-center">
-            <p className="text-sm text-[var(--muted)]">
+          <div className="rounded-[2rem] border border-dashed border-[var(--border)] bg-[var(--surface)] p-10 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)] text-lg text-[var(--accent)]">
+              +
+            </div>
+
+            <p className="mt-4 text-sm text-[var(--muted)]">
               No experience has been added yet.
             </p>
           </div>
         )}
       </section>
+    </div>
+  );
+}
+
+function FormField({
+  id,
+  label,
+  value,
+  onChange,
+  placeholder,
+  required = false,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
+      >
+        {label}
+      </label>
+
+      <input
+        id={id}
+        type="text"
+        value={value}
+        required={required}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        className="w-full rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3.5 text-sm text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+      />
     </div>
   );
 }

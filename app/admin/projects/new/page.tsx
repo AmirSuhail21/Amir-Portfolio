@@ -43,38 +43,79 @@ export default async function NewProjectPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--background)] px-5 py-10 sm:px-8 lg:px-12">
+    <main className="min-h-screen bg-[var(--background)] px-5 py-8 text-[var(--foreground)] transition-colors duration-300 sm:px-8 sm:py-10 lg:px-12">
       <div className="mx-auto max-w-5xl">
+        {/* Back */}
         <div className="mb-8">
           <Link
             href="/admin/projects"
-            className="text-sm font-medium text-[var(--muted)] transition hover:text-[var(--foreground)]"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
           >
-            ← Back to Projects
+            <span className="text-base">←</span>
+            Back to Projects
           </Link>
         </div>
 
-        <header className="mb-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-            Admin Panel
-          </p>
+        {/* Header */}
+        <header className="mb-10 border-b border-[var(--border)] pb-8">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-black text-[var(--foreground)]">
+              AS
+            </div>
 
-          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--accent)]">
+                Portfolio CMS
+              </p>
+
+              <p className="text-xs text-[var(--muted)]">
+                Project Management
+              </p>
+            </div>
+          </div>
+
+          <h1 className="mt-8 text-3xl font-black tracking-tight text-[var(--foreground)] sm:text-4xl">
             Add Project
           </h1>
 
-          <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
             Add a new project to your portfolio and select the global skills
             used to build it.
           </p>
         </header>
 
-        <section className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 sm:p-8">
-          <ProjectForm
-            projectTypes={projectTypes ?? []}
-            skills={skills ?? []}
-          />
+        {/* Project Form */}
+        <section className="overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--card)] shadow-2xl shadow-black/5 dark:shadow-black/20">
+          <div className="border-b border-[var(--border)] px-6 py-6 sm:px-8">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--accent)]">
+              New Project
+            </p>
+
+            <h2 className="mt-2 text-xl font-black tracking-tight text-[var(--foreground)]">
+              Project Details
+            </h2>
+
+            <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+              Add the project information, image, URLs, category and
+              technologies used.
+            </p>
+          </div>
+
+          <div className="p-6 sm:p-8">
+            <ProjectForm
+              projectTypes={projectTypes ?? []}
+              skills={skills ?? []}
+            />
+          </div>
         </section>
+
+        {/* Info */}
+        <div className="mt-6 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4">
+          <p className="text-xs leading-6 text-[var(--muted)]">
+            Skills selected here come from your global Skills management
+            section.
+          </p>
+        </div>
       </div>
     </main>
   );

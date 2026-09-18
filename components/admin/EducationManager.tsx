@@ -173,29 +173,37 @@ export default function EducationManager({
 
   return (
     <div>
+      {/* Success Message */}
       {message && (
-        <div className="mb-6 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-600 dark:text-green-400">
+        <div className="mb-6 rounded-2xl border border-emerald-500/25 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
           {message}
         </div>
       )}
 
+      {/* Error Message */}
       {error && (
-        <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-500">
+        <div className="mb-6 rounded-2xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-600 dark:text-red-300">
           {error}
         </div>
       )}
 
-      <section className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 sm:p-8">
+      {/* Education Form */}
+      <section className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-xl shadow-black/5 dark:shadow-black/20 sm:p-8">
         <div className="mb-7">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--accent)]">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--accent)]">
             {editingId ? "Edit Education" : "Add Education"}
           </p>
 
-          <h2 className="mt-2 text-xl font-semibold">
+          <h2 className="mt-2 text-xl font-black tracking-tight text-[var(--foreground)]">
             {editingId
               ? "Update academic information"
               : "Add academic information"}
           </h2>
+
+          <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+            Keep your academic background updated for the public
+            portfolio.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -226,7 +234,7 @@ export default function EducationManager({
             <div className="sm:col-span-2">
               <label
                 htmlFor="education-description"
-                className="mb-2 block text-sm font-medium"
+                className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
               >
                 Description
               </label>
@@ -239,7 +247,7 @@ export default function EducationManager({
                 }
                 placeholder="Add a short description about this education..."
                 rows={5}
-                className="w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+                className="w-full resize-y rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3.5 text-sm leading-6 text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
               />
             </div>
           </div>
@@ -249,7 +257,7 @@ export default function EducationManager({
               <button
                 type="button"
                 onClick={resetForm}
-                className="rounded-xl border border-[var(--border)] px-6 py-3 text-sm font-semibold transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                className="rounded-2xl border border-[var(--border)] bg-[var(--background)] px-6 py-3 text-sm font-semibold text-[var(--muted)] transition-all duration-200 hover:border-[var(--accent)]/40 hover:text-[var(--accent)]"
               >
                 Cancel Edit
               </button>
@@ -258,7 +266,7 @@ export default function EducationManager({
             <button
               type="submit"
               disabled={loading}
-              className="rounded-xl bg-[var(--foreground)] px-6 py-3 text-sm font-semibold text-[var(--background)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-2xl bg-[var(--foreground)] px-6 py-3 text-sm font-bold text-[var(--background)] transition-all duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-lg hover:shadow-black/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
                 ? "Saving..."
@@ -270,20 +278,25 @@ export default function EducationManager({
         </form>
       </section>
 
-      <section className="mt-8">
+      {/* Saved Entries */}
+      <section className="mt-10">
         <div className="mb-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--muted)]">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
             Saved Entries
           </p>
 
-          <h2 className="mt-2 text-xl font-semibold">
+          <h2 className="mt-2 text-xl font-black tracking-tight text-[var(--foreground)]">
             Education History
           </h2>
         </div>
 
         {education.length === 0 ? (
-          <div className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 text-center">
-            <p className="text-sm text-[var(--muted)]">
+          <div className="rounded-[2rem] border border-dashed border-[var(--border)] bg-[var(--surface)] p-10 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)] text-lg text-[var(--accent)]">
+              +
+            </div>
+
+            <p className="mt-4 text-sm text-[var(--muted)]">
               No education entries have been added yet.
             </p>
           </div>
@@ -292,15 +305,15 @@ export default function EducationManager({
             {education.map((item) => (
               <article
                 key={item.id}
-                className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 sm:p-7"
+                className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-6 transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--background)] sm:p-7"
               >
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <span className="inline-flex rounded-full border border-[var(--border)] px-3 py-1 text-xs font-medium text-[var(--accent)]">
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0">
+                    <span className="inline-flex rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--accent)]">
                       {item.period}
                     </span>
 
-                    <h3 className="mt-4 text-xl font-semibold">
+                    <h3 className="mt-4 text-xl font-black tracking-tight text-[var(--foreground)]">
                       {item.title}
                     </h3>
 
@@ -321,7 +334,7 @@ export default function EducationManager({
                     <button
                       type="button"
                       onClick={() => startEdit(item)}
-                      className="rounded-xl border border-[var(--border)] px-4 py-2.5 text-xs font-semibold transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                      className="rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-xs font-bold text-[var(--foreground)] transition-all duration-200 hover:border-[var(--accent)]/40 hover:text-[var(--accent)]"
                     >
                       Edit
                     </button>
@@ -330,7 +343,7 @@ export default function EducationManager({
                       type="button"
                       onClick={() => handleDelete(item.id)}
                       disabled={deletingId === item.id}
-                      className="rounded-xl border border-red-500/30 px-4 py-2.5 text-xs font-semibold text-red-500 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-2.5 text-xs font-bold text-red-600 transition-all duration-200 hover:bg-red-500/10 dark:text-red-300 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {deletingId === item.id
                         ? "Deleting..."
@@ -360,25 +373,25 @@ function FormField({
   placeholder: string;
   required?: boolean;
 }) {
+  const inputId = label.toLowerCase().replace(/\s+/g, "-");
+
   return (
     <div>
       <label
-        htmlFor={label}
-        className="mb-2 block text-sm font-medium"
+        htmlFor={inputId}
+        className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
       >
         {label}
       </label>
 
       <input
-        id={label}
+        id={inputId}
         type="text"
         value={value}
         required={required}
-        onChange={(event) =>
-          onChange(event.target.value)
-        }
+        onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+        className="w-full rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3.5 text-sm text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
       />
     </div>
   );

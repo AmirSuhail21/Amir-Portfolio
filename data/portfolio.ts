@@ -18,9 +18,10 @@ export const portfolioData: PortfolioData = {
 
     socialLinks: {
       github: "https://github.com/AmirSuhail21",
-      linkedin: "",
-      instagram: "",
-      email: "",
+      linkedin: "https://www.linkedin.com/in/amir-suhail-13a776338",
+      instagram: "https://www.instagram.com/amir_suhail_2.1_/",
+      whatsapp: "https://wa.me/918445939397",
+      email: "mannuraien3@gmail.com",
     },
   },
 

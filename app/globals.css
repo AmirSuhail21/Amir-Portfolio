@@ -1,21 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --card: #ffffff;
-  --accent: #2563eb;
+  --background: #f1eef6;
+  --foreground: #18151f;
+
+  --card: #faf8fc;
+  --card-foreground: #18151f;
+
+  --muted: #625d6b;
+  --border: #d9d2e2;
+
+  --accent: #7c3aed;
+  --accent-foreground: #ffffff;
+
+  --surface: #e5dfed;
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #f8fafc;
-  --muted: #a1a1aa;
-  --border: #27272a;
-  --card: #111113;
-  --accent: #60a5fa;
+  --background: #0d0c10;
+  --foreground: #f5f3f7;
+
+  --card: #151319;
+  --card-foreground: #f5f3f7;
+
+  --muted: #a6a1ae;
+  --border: #28242f;
+
+  --accent: #a78bfa;
+  --accent-foreground: #100b19;
+
+  --surface: #18151d;
 }
 
 * {
@@ -32,16 +46,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   transition:
-    background-color 0.25s ease,
-    color 0.25s ease;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 ::selection {
   background: var(--accent);
-  color: white;
+  color: var(--accent-foreground);
 }

@@ -148,17 +148,10 @@ export default function ProjectEditForm({
 
       let imageUrl = currentImage || null;
 
-      /*
-       * If user selected Remove Image,
-       * remove the image from the project.
-       */
       if (removeImage && !imageFile) {
         imageUrl = null;
       }
 
-      /*
-       * Upload new image if selected.
-       */
       if (imageFile) {
         const fileExtension =
           imageFile.name.split(".").pop()?.toLowerCase() || "jpg";
@@ -188,9 +181,6 @@ export default function ProjectEditForm({
         imageUrl = publicUrl;
       }
 
-      /*
-       * Update project.
-       */
       const { data: updatedProject, error: projectError } =
         await supabase
           .from("projects")
@@ -224,9 +214,6 @@ export default function ProjectEditForm({
         return;
       }
 
-      /*
-       * Replace project skills.
-       */
       const { error: deleteSkillsError } = await supabase
         .from("project_skills")
         .delete()
@@ -259,19 +246,7 @@ export default function ProjectEditForm({
         }
       }
 
-      /*
-       * Delete old storage image if:
-       *
-       * 1. User removed the image, OR
-       * 2. User uploaded a replacement image.
-       *
-       * We only delete the old file after the database
-       * update has succeeded.
-       */
-      if (
-        oldImageUrl &&
-        imageUrl !== oldImageUrl
-      ) {
+      if (oldImageUrl && imageUrl !== oldImageUrl) {
         await deleteStorageImage(oldImageUrl);
       }
 
@@ -299,29 +274,37 @@ export default function ProjectEditForm({
     <form onSubmit={handleSubmit}>
       {/* Success Message */}
       {message && (
-        <div className="mb-6 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-600 dark:text-green-400">
-          {message}
+        <div className="mb-6 rounded-2xl border border-emerald-500/25 bg-emerald-500/10 px-5 py-4 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-xs font-bold">
+              ✓
+            </span>
+
+            <span>{message}</span>
+          </div>
         </div>
       )}
 
       {/* Error Message */}
       {error && (
-        <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-500">
-          {error}
+        <div className="mb-6 rounded-2xl border border-red-500/25 bg-red-500/10 px-5 py-4 text-sm leading-6 text-red-600 dark:text-red-300">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-xs font-bold">
+              !
+            </span>
+
+            <span>{error}</span>
+          </div>
         </div>
       )}
 
       {/* Basic Information */}
       <div>
-        <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--accent)]">
-            Project Information
-          </p>
-
-          <h2 className="mt-2 text-xl font-semibold">
-            Basic Details
-          </h2>
-        </div>
+        <SectionHeading
+          eyebrow="Project Information"
+          title="Basic Details"
+          description="Update the project's name, category and description."
+        />
 
         <div className="grid gap-6 sm:grid-cols-2">
           <FormField
@@ -335,7 +318,7 @@ export default function ProjectEditForm({
           <div>
             <label
               htmlFor="edit-project-type"
-              className="mb-2 block text-sm font-medium"
+              className="mb-2.5 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
             >
               Project Type
             </label>
@@ -347,7 +330,7 @@ export default function ProjectEditForm({
                 setTypeId(event.target.value)
               }
               required
-              className="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm outline-none transition focus:border-[var(--accent)]"
+              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3.5 text-sm text-[var(--foreground)] outline-none transition focus:border-[var(--accent)]"
             >
               <option value="">
                 Select project type
@@ -367,7 +350,7 @@ export default function ProjectEditForm({
           <div className="sm:col-span-2">
             <label
               htmlFor="edit-project-description"
-              className="mb-2 block text-sm font-medium"
+              className="mb-2.5 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
             >
               Description
             </label>
@@ -380,50 +363,54 @@ export default function ProjectEditForm({
               }
               placeholder="Describe the project..."
               rows={6}
-              className="w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+              className="w-full resize-y rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3.5 text-sm leading-7 text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
             />
           </div>
         </div>
       </div>
 
       {/* Project Image */}
-      <div className="mt-10 border-t border-[var(--border)] pt-10">
-        <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--accent)]">
-            Project Image
-          </p>
-
-          <h2 className="mt-2 text-xl font-semibold">
-            Project Screenshot
-          </h2>
-
-          <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-            Keep the existing image, replace it with a new one,
-            or remove it completely.
-          </p>
-        </div>
+      <div className="mt-12 border-t border-[var(--border)] pt-10">
+        <SectionHeading
+          eyebrow="Project Image"
+          title="Project Screenshot"
+          description="Keep the existing image, replace it with a new one, or remove it completely."
+        />
 
         {/* Current Image */}
         {currentImage && !removeImage && (
-          <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--background)]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={currentImage}
-              alt={project.title}
-              className="h-56 w-full object-cover"
-            />
+          <div className="mb-6 overflow-hidden rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface)]">
+            <div className="border-b border-[var(--border)] px-5 py-3">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
+                Current Image
+              </p>
+            </div>
+
+            <div className="bg-[var(--background)] p-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={currentImage}
+                alt={project.title}
+                className="h-64 w-full rounded-[1rem] object-cover sm:h-80"
+              />
+            </div>
           </div>
         )}
 
         {/* Image Removed Preview */}
         {removeImage && !imageFile && (
-          <div className="mb-5 rounded-2xl border border-dashed border-red-500/40 bg-red-500/5 p-8 text-center">
-            <p className="text-sm font-medium text-red-500">
+          <div className="mb-6 rounded-[1.5rem] border border-dashed border-red-500/30 bg-red-500/5 p-8 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-300">
+              ×
+            </div>
+
+            <p className="mt-4 text-sm font-semibold text-red-600 dark:text-red-300">
               Project image will be removed.
             </p>
 
-            <p className="mt-2 text-xs text-[var(--muted)]">
-              Click Save Changes to permanently remove it.
+            <p className="mt-2 text-xs leading-6 text-[var(--muted)]">
+              Click Save Changes to permanently remove it from
+              this project and storage.
             </p>
           </div>
         )}
@@ -432,42 +419,53 @@ export default function ProjectEditForm({
         <div>
           <label
             htmlFor="edit-project-image"
-            className="mb-2 block text-sm font-medium"
+            className="mb-2.5 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
           >
             {currentImage && !removeImage
               ? "Replace Project Image"
               : "Upload Project Image"}
           </label>
 
-          <input
-            id="edit-project-image"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={(event) => {
-              handleImageSelection(
-                event.target.files?.[0] ?? null
-              );
-            }}
-            className="block w-full text-sm file:mr-4 file:rounded-lg file:border-0 file:bg-[var(--foreground)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[var(--background)]"
-          />
+          <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-5 transition-colors hover:border-[var(--accent)]/40">
+            <input
+              id="edit-project-image"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(event) => {
+                handleImageSelection(
+                  event.target.files?.[0] ?? null
+                );
+              }}
+              className="block w-full cursor-pointer text-sm text-[var(--muted)] file:mr-4 file:cursor-pointer file:rounded-xl file:border-0 file:bg-[var(--foreground)] file:px-4 file:py-2.5 file:text-xs file:font-bold file:text-[var(--background)] file:transition hover:file:opacity-90"
+            />
+
+            <p className="mt-3 text-xs leading-5 text-[var(--muted)]">
+              Supported formats: JPG, PNG and WebP.
+            </p>
+          </div>
         </div>
 
         {imageFile && (
-          <p className="mt-3 text-xs text-[var(--muted)]">
-            New image selected: {imageFile.name}
-          </p>
+          <div className="mt-4 rounded-2xl border border-[var(--accent)]/20 bg-[var(--accent)]/5 px-4 py-3">
+            <p className="text-xs font-medium text-[var(--accent)]">
+              New image selected
+            </p>
+
+            <p className="mt-1 truncate text-xs text-[var(--muted)]">
+              {imageFile.name}
+            </p>
+          </div>
         )}
 
         {/* Remove Image */}
         {currentImage && (
-          <div className="mt-5 rounded-xl border border-[var(--border)] bg-[var(--background)] p-4">
+          <div className="mt-5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
             <label className="flex cursor-pointer items-start gap-3">
               <input
                 type="checkbox"
                 checked={removeImage}
                 onChange={(event) => {
-                  const checked =
-                    event.target.checked;
+                  const checked = event.target.checked;
 
                   setRemoveImage(checked);
 
@@ -488,13 +486,13 @@ export default function ProjectEditForm({
               />
 
               <span>
-                <span className="block text-sm font-semibold text-red-500">
+                <span className="block text-sm font-semibold text-red-600 dark:text-red-300">
                   Remove current image
                 </span>
 
-                <span className="mt-1 block text-xs leading-5 text-[var(--muted)]">
-                  The image will be removed from this project
-                  and deleted from storage when you save.
+                <span className="mt-1 block text-xs leading-6 text-[var(--muted)]">
+                  The image will be removed from this project and
+                  deleted from storage when you save.
                 </span>
               </span>
             </label>
@@ -503,16 +501,12 @@ export default function ProjectEditForm({
       </div>
 
       {/* URLs */}
-      <div className="mt-10 border-t border-[var(--border)] pt-10">
-        <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--accent)]">
-            Project Links
-          </p>
-
-          <h2 className="mt-2 text-xl font-semibold">
-            Live & Repository URLs
-          </h2>
-        </div>
+      <div className="mt-12 border-t border-[var(--border)] pt-10">
+        <SectionHeading
+          eyebrow="Project Links"
+          title="Live & Repository URLs"
+          description="Add the public project URL and optional GitHub repository."
+        />
 
         <div className="grid gap-6 sm:grid-cols-2">
           <FormField
@@ -520,6 +514,7 @@ export default function ProjectEditForm({
             value={liveUrl}
             onChange={setLiveUrl}
             placeholder="https://example.com"
+            type="url"
           />
 
           <FormField
@@ -527,28 +522,21 @@ export default function ProjectEditForm({
             value={githubUrl}
             onChange={setGithubUrl}
             placeholder="https://github.com/username/project"
+            type="url"
           />
         </div>
       </div>
 
       {/* Skills */}
-      <div className="mt-10 border-t border-[var(--border)] pt-10">
-        <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--accent)]">
-            Technologies
-          </p>
-
-          <h2 className="mt-2 text-xl font-semibold">
-            Project Skills
-          </h2>
-
-          <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-            Select the global skills used for this project.
-          </p>
-        </div>
+      <div className="mt-12 border-t border-[var(--border)] pt-10">
+        <SectionHeading
+          eyebrow="Technologies"
+          title="Project Skills"
+          description="Select the global skills used to build this project."
+        />
 
         {skills.length === 0 ? (
-          <div className="rounded-2xl border border-[var(--border)] p-5 text-sm text-[var(--muted)]">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 text-sm text-[var(--muted)]">
             No global skills available.
           </div>
         ) : (
@@ -564,15 +552,21 @@ export default function ProjectEditForm({
                   onClick={() =>
                     toggleSkill(skill.id)
                   }
-                  className={`rounded-xl border p-4 text-left transition ${
+                  className={`group rounded-2xl border p-4 text-left transition-all duration-200 ${
                     selected
-                      ? "border-[var(--accent)] bg-[var(--accent)]/10"
-                      : "border-[var(--border)] bg-[var(--background)] hover:border-[var(--accent)]/50"
+                      ? "border-[var(--accent)]/40 bg-[var(--accent)]/10 shadow-lg shadow-black/5"
+                      : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent)]/30 hover:bg-[var(--background)]"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-sm font-semibold">
+                      <p
+                        className={`text-sm font-semibold ${
+                          selected
+                            ? "text-[var(--accent)]"
+                            : "text-[var(--foreground)]"
+                        }`}
+                      >
                         {skill.name}
                       </p>
 
@@ -582,10 +576,10 @@ export default function ProjectEditForm({
                     </div>
 
                     <span
-                      className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-xs ${
+                      className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-xs font-bold transition ${
                         selected
-                          ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--background)]"
-                          : "border-[var(--border)]"
+                          ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-foreground)]"
+                          : "border-[var(--border)] bg-[var(--background)] text-transparent group-hover:border-[var(--accent)]/30"
                       }`}
                     >
                       {selected ? "✓" : ""}
@@ -596,40 +590,51 @@ export default function ProjectEditForm({
             })}
           </div>
         )}
+
+        {selectedSkills.length > 0 && (
+          <p className="mt-4 text-xs text-[var(--muted)]">
+            {selectedSkills.length} skill
+            {selectedSkills.length === 1 ? "" : "s"} selected.
+          </p>
+        )}
       </div>
 
       {/* Featured */}
-      <div className="mt-10 border-t border-[var(--border)] pt-10">
-        <label className="flex cursor-pointer items-start gap-3">
-          <input
-            type="checkbox"
-            checked={featured}
-            onChange={(event) =>
-              setFeatured(event.target.checked)
-            }
-            className="mt-1 h-4 w-4 accent-[var(--accent)]"
-          />
+      <div className="mt-12 border-t border-[var(--border)] pt-10">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={featured}
+              onChange={(event) =>
+                setFeatured(event.target.checked)
+              }
+              className="mt-1 h-4 w-4 accent-[var(--accent)]"
+            />
 
-          <span>
-            <span className="block text-sm font-semibold">
-              Featured Project
-            </span>
+            <span>
+              <span className="block text-sm font-semibold text-[var(--foreground)]">
+                Featured Project
+              </span>
 
-            <span className="mt-1 block text-xs leading-5 text-[var(--muted)]">
-              Mark this project as featured on the portfolio.
+              <span className="mt-1 block text-xs leading-6 text-[var(--muted)]">
+                Mark this project as featured on the public
+                portfolio. Featured projects receive larger
+                presentation on the Projects section.
+              </span>
             </span>
-          </span>
-        </label>
+          </label>
+        </div>
       </div>
 
       {/* Actions */}
-      <div className="mt-10 flex flex-wrap justify-end gap-3 border-t border-[var(--border)] pt-8">
+      <div className="mt-12 flex flex-wrap justify-end gap-3 border-t border-[var(--border)] pt-8">
         <button
           type="button"
           onClick={() =>
             router.push("/admin/projects")
           }
-          className="rounded-xl border border-[var(--border)] px-6 py-3 text-sm font-semibold transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-6 py-3.5 text-sm font-semibold text-[var(--muted)] transition-all duration-200 hover:border-[var(--accent)]/40 hover:text-[var(--accent)]"
         >
           Cancel
         </button>
@@ -637,14 +642,38 @@ export default function ProjectEditForm({
         <button
           type="submit"
           disabled={loading}
-          className="rounded-xl bg-[var(--foreground)] px-6 py-3 text-sm font-semibold text-[var(--background)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-2xl bg-[var(--foreground)] px-6 py-3.5 text-sm font-bold text-[var(--background)] shadow-lg shadow-black/10 transition-all duration-200 hover:-translate-y-0.5 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {loading
-            ? "Saving Changes..."
-            : "Save Changes"}
+          {loading ? "Saving Changes..." : "Save Changes"}
         </button>
       </div>
     </form>
+  );
+}
+
+function SectionHeading({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="mb-7">
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--accent)]">
+        {eyebrow}
+      </p>
+
+      <h2 className="mt-2 text-xl font-black tracking-tight text-[var(--foreground)]">
+        {title}
+      </h2>
+
+      <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+        {description}
+      </p>
+    </div>
   );
 }
 
@@ -667,7 +696,7 @@ function FormField({
     <div>
       <label
         htmlFor={label}
-        className="mb-2 block text-sm font-medium"
+        className="mb-2.5 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
       >
         {label}
       </label>
@@ -681,7 +710,7 @@ function FormField({
           onChange(event.target.value)
         }
         placeholder={placeholder}
-        className="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+        className="w-full rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3.5 text-sm text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
       />
     </div>
   );

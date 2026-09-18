@@ -1,27 +1,24 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
-export default function AdminLoginPage() {
-  const router = useRouter();
-
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+  async function handleReset(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    setError("");
     setLoading(true);
+    setMessage("");
+    setError("");
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/callback`,
     });
 
     if (error) {
@@ -30,8 +27,11 @@ export default function AdminLoginPage() {
       return;
     }
 
-    router.push("/admin");
-    router.refresh();
+    setMessage(
+      "If an account exists with this email, a password reset link has been sent."
+    );
+
+    setLoading(false);
   }
 
   return (
@@ -54,17 +54,17 @@ export default function AdminLoginPage() {
           </p>
 
           <h1 className="mt-3 text-3xl font-black tracking-tight text-[var(--foreground)]">
-            Admin Login
+            Forgot Password
           </h1>
 
           <p className="mt-2 text-sm text-[var(--muted)]">
-            Sign in to manage your portfolio.
+            Enter your admin email to receive a password reset link.
           </p>
         </div>
 
-        {/* Login Card */}
+        {/* Reset Card */}
         <form
-          onSubmit={handleLogin}
+          onSubmit={handleReset}
           className="rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-6 shadow-2xl shadow-black/5 backdrop-blur-xl dark:shadow-black/20 sm:p-8"
         >
           {error && (
@@ -73,13 +73,18 @@ export default function AdminLoginPage() {
             </div>
           )}
 
-          {/* Email */}
+          {message && (
+            <div className="mb-5 rounded-2xl border border-emerald-500/25 bg-emerald-500/10 px-4 py-3 text-sm leading-6 text-emerald-600 dark:text-emerald-300">
+              {message}
+            </div>
+          )}
+
           <div>
             <label
               htmlFor="email"
               className="mb-2.5 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
             >
-              Email
+              Admin Email
             </label>
 
             <input
@@ -94,44 +99,21 @@ export default function AdminLoginPage() {
             />
           </div>
 
-          {/* Password */}
-          <div className="mt-5">
-            <label
-              htmlFor="password"
-              className="mb-2.5 block text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)]"
-            >
-              Password
-            </label>
-
-            <input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Enter your password"
-              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3.5 text-sm text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
-            />
-          </div>
-
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
             className="mt-6 w-full rounded-2xl bg-[var(--foreground)] px-5 py-3.5 text-sm font-bold text-[var(--background)] transition-all duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-lg hover:shadow-black/10 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Sending..." : "Send Reset Link"}
           </button>
 
-          {/* Forgot Password */}
-          <div className="mt-4 text-center">
-            <a
-              href="/admin/forgot-password"
+          <div className="mt-5 text-center">
+            <Link
+              href="/admin/login"
               className="text-sm font-semibold text-[var(--accent)] transition-colors hover:underline"
             >
-              Forgot Password?
-            </a>
+              ← Back to Login
+            </Link>
           </div>
         </form>
 

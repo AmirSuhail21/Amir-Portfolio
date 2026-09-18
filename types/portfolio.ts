@@ -2,6 +2,7 @@ export type SocialLinks = {
   github: string;
   linkedin: string;
   instagram: string;
+  whatsapp: string;
   email: string;
 };
 

@@ -194,7 +194,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
               onChange={(event) => {
                 setImageFile(event.target.files?.[0] ?? null);
               }}
-              className="block w-full text-sm file:mr-4 file:rounded-lg file:border-0 file:bg-[var(--foreground)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[var(--background)]"
+              className="block w-full text-sm text-[var(--muted)] file:mr-4 file:cursor-pointer file:rounded-lg file:border-0 file:bg-[var(--foreground)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[var(--background)]"
             />
 
             {imageFile && (
