@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { portfolioData } from "@/data/portfolio";
+import Image from "next/image";
 
 const ThemeToggle = dynamic(() => import("./ThemeToggle"), {
   ssr: false,
@@ -84,20 +85,19 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-5 sm:px-6">
       <div className="mx-auto flex h-[68px] max-w-7xl items-center rounded-[22px] border border-[var(--border)] bg-[var(--card)]/80 px-3 shadow-[0_12px_40px_rgba(0,0,0,0.08)] backdrop-blur-2xl dark:shadow-[0_12px_40px_rgba(0,0,0,0.35)] sm:px-5">
 
-        {/* Logo */}
-        <a
-          href={isAdminRoute ? "/#home" : "#home"}
-          aria-label="Amir Suhail Home"
-          className="group flex shrink-0 items-center gap-2.5 rounded-xl px-2 py-1.5"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-sm font-black tracking-tight transition-all duration-200 group-hover:border-[var(--accent)] group-hover:text-[var(--accent)]">
-            AS
-          </div>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/as-logo.png"
+            alt="Amir Suhail"
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-full object-cover"
+          />
 
-          <span className="hidden text-sm font-bold tracking-tight sm:block">
+          <span className="hidden text-sm font-bold text-[var(--foreground)] sm:block">
             Amir Suhail
           </span>
-        </a>
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="mx-auto hidden items-center gap-1 lg:flex">

@@ -1,4 +1,5 @@
 import { portfolioData } from "@/data/portfolio";
+import Image from "next/image";
 
 export default function Footer() {
   const { profile } = portfolioData;
@@ -20,9 +21,13 @@ export default function Footer() {
               className="inline-flex items-center gap-3"
               aria-label="Amir Suhail Home"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-sm font-black tracking-tight text-[var(--foreground)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]">
-                AS
-              </span>
+              <Image
+                src="/as-logo.png"
+                alt="Amir Suhail"
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full object-cover"
+              />
 
               <span className="text-sm font-black tracking-tight">
                 {profile.name}
