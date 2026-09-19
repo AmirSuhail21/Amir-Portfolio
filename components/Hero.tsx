@@ -81,6 +81,14 @@ export default async function Hero() {
             >
               Let&apos;s Talk
             </a>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-[var(--border)] bg-[var(--card)]/70 px-6 py-3.5 text-sm font-bold text-[var(--foreground)] backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >
+              Download Resume ↗
+            </a>
           </div>
 
           {/* Social / Location */}
