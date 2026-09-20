@@ -36,6 +36,9 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
   const [linkedin, setLinkedin] = useState(profile?.linkedin ?? "");
   const [instagram, setInstagram] = useState(profile?.instagram ?? "");
   const [resumeUrl, setResumeUrl] = useState(profile?.resume_url ?? "");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+
+  const [uploadingResume, setUploadingResume] = useState(false);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -98,6 +101,155 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
     router.refresh();
   }
 
+
+  async function handleResumeUpload() {
+    if (!profile || !resumeFile) {
+      return;
+    }
+
+    setUploadingResume(true);
+    setMessage("");
+    setError("");
+
+    if (resumeFile.type !== "application/pdf") {
+      setError("Please select a PDF file.");
+      setUploadingResume(false);
+      return;
+    }
+
+    if (resumeFile.size > 5 * 1024 * 1024) {
+      setError("Resume PDF must be smaller than 5 MB.");
+      setUploadingResume(false);
+      return;
+    }
+
+    const filePath = `resume/resume-${Date.now()}.pdf`;
+
+    // Upload new resume
+    const { error: uploadError } = await supabase.storage
+      .from("portfolio")
+      .upload(filePath, resumeFile, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: "application/pdf",
+      });
+
+    if (uploadError) {
+      setError(uploadError.message);
+      setUploadingResume(false);
+      return;
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage
+      .from("portfolio")
+      .getPublicUrl(filePath);
+
+    // Save new resume URL
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({
+        resume_url: publicUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", profile.id);
+
+    if (updateError) {
+      // If database update fails, remove the newly uploaded file
+      await supabase.storage
+        .from("portfolio")
+        .remove([filePath]);
+
+      setError(updateError.message);
+      setUploadingResume(false);
+      return;
+    }
+
+    // Delete previous resume from Storage
+    if (resumeUrl) {
+      try {
+        const oldPath = new URL(resumeUrl).pathname.split(
+          "/storage/v1/object/public/portfolio/"
+        )[1];
+
+        if (oldPath && oldPath !== filePath) {
+          await supabase.storage
+            .from("portfolio")
+            .remove([oldPath]);
+        }
+      } catch {
+        // New resume is already active, so don't block the update
+      }
+    }
+
+    setResumeUrl(publicUrl);
+    setResumeFile(null);
+    setMessage("Resume replaced successfully.");
+    setUploadingResume(false);
+
+    router.refresh();
+  }
+
+  async function handleRemoveResume() {
+    if (!profile || !resumeUrl) {
+      return;
+    }
+
+    setMessage("");
+    setError("");
+
+    const confirmed = window.confirm(
+      "Are you sure you want to remove your resume?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const resumePath = new URL(resumeUrl).pathname.split(
+        "/storage/v1/object/public/portfolio/"
+      )[1];
+
+      if (resumePath) {
+        const { error: deleteError } = await supabase.storage
+          .from("portfolio")
+          .remove([resumePath]);
+
+        if (deleteError) {
+          setError(deleteError.message);
+          setLoading(false);
+          return;
+        }
+      }
+
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({
+          resume_url: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", profile.id);
+
+      if (updateError) {
+        setError(updateError.message);
+        setLoading(false);
+        return;
+      }
+
+      setResumeUrl("");
+      setMessage("Resume removed successfully.");
+    } catch {
+      setError("Unable to remove the resume.");
+    }
+
+    setLoading(false);
+    router.refresh();
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -122,7 +274,6 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
         github: github || null,
         linkedin: linkedin || null,
         instagram: instagram || null,
-        resume_url: resumeUrl || null,
         updated_at: new Date().toISOString(),
       })
       .eq("id", profile.id);
@@ -215,6 +366,65 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
         </div>
       </div>
 
+      {/* Resume */}
+      <div className="mb-10 rounded-2xl border border-[var(--border)] bg-[var(--background)] p-5 sm:p-6">
+        <div>
+          <p className="text-sm font-semibold">Resume</p>
+
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            Upload your resume as a PDF. Maximum size: 5 MB.
+          </p>
+        </div>
+
+        <div className="mt-5">
+          {resumeUrl && (
+            <>
+              <a
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mb-4 inline-flex rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              >
+                View Current Resume ↗
+              </a>
+
+              <button
+                type="button"
+                onClick={handleRemoveResume}
+                disabled={loading}
+                className="ml-3 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-500 transition hover:-translate-y-0.5 hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loading ? "Removing..." : "Remove Resume"}
+              </button>
+            </>
+          )}
+
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(event) => {
+              setResumeFile(event.target.files?.[0] ?? null);
+            }}
+            className="block w-full text-sm text-[var(--muted)] file:mr-4 file:cursor-pointer file:rounded-lg file:border-0 file:bg-[var(--foreground)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[var(--background)]"
+          />
+
+          {resumeFile && (
+            <p className="mt-2 text-xs text-[var(--muted)]">
+              Selected: {resumeFile.name}
+            </p>
+          )}
+
+          <button
+            type="button"
+            onClick={handleResumeUpload}
+            disabled={!resumeFile || uploadingResume}
+            className="mt-4 rounded-xl bg-[var(--foreground)] px-5 py-2.5 text-sm font-semibold text-[var(--background)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {uploadingResume ? "Uploading..." : "Upload Resume"}
+          </button>
+        </div>
+      </div>
+
       {/* Profile Information */}
       <div className="grid gap-6 sm:grid-cols-2">
         <FormField
@@ -276,14 +486,6 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
           placeholder="https://instagram.com/username"
         />
 
-        <div className="sm:col-span-2">
-          <FormField
-            label="Resume URL"
-            value={resumeUrl}
-            onChange={setResumeUrl}
-            placeholder="https://..."
-          />
-        </div>
 
         <div className="sm:col-span-2">
           <label

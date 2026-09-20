@@ -1,5 +1,6 @@
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { portfolioData } from "@/data/portfolio";
+import ContactForm from "@/components/ContactForm";
 
 function EmailIcon() {
   return (
@@ -185,43 +186,11 @@ export default async function Contact() {
               </p>
 
               <h3 className="mt-2 text-xl font-black tracking-tight">
-                Connect with {profile.name}
+                Send me a message
               </h3>
             </div>
 
-            <div className="mt-5 space-y-3">
-              {contactLinks.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target={item.label === "Email" ? undefined : "_blank"}
-                  rel={
-                    item.label === "Email"
-                      ? undefined
-                      : "noopener noreferrer"
-                  }
-                  className="group flex items-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)]/60 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/40 hover:bg-[var(--card)]"
-                >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--card)] text-[var(--muted)] transition-colors duration-200 group-hover:text-[var(--accent)]">
-                    {iconMap[item.label]}
-                  </span>
-
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-bold text-[var(--foreground)]">
-                      {item.label}
-                    </span>
-
-                    <span className="mt-1 block truncate text-xs text-[var(--muted)]">
-                      {item.value}
-                    </span>
-                  </span>
-
-                  <span className="text-lg text-[var(--muted)] transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[var(--accent)]">
-                    ↗
-                  </span>
-                </a>
-              ))}
-            </div>
+            <ContactForm />
           </div>
         </div>
 

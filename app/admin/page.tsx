@@ -152,14 +152,6 @@ export default async function AdminDashboardPage() {
             </Link>
           ))}
 
-          {/* Settings */}
-          <DashboardCard
-            number="06"
-            title="Settings"
-            description="Additional portfolio administration settings."
-            label="System"
-            disabled
-          />
         </div>
 
         {/* Authentication Status */}
@@ -219,11 +211,10 @@ function DashboardCard({
 }) {
   return (
     <div
-      className={`group relative h-full overflow-hidden rounded-[2rem] border p-6 transition-all duration-300 sm:p-7 ${
-        disabled
-          ? "cursor-default border-[var(--border)] bg-[var(--surface)] opacity-50"
-          : "border-[var(--border)] bg-[var(--card)] hover:-translate-y-1 hover:border-[var(--accent)]/40 hover:bg-[var(--card)] hover:shadow-2xl hover:shadow-black/10 dark:hover:shadow-black/30"
-      }`}
+      className={`group relative h-full overflow-hidden rounded-[2rem] border p-6 transition-all duration-300 sm:p-7 ${disabled
+        ? "cursor-default border-[var(--border)] bg-[var(--surface)] opacity-50"
+        : "border-[var(--border)] bg-[var(--card)] hover:-translate-y-1 hover:border-[var(--accent)]/40 hover:bg-[var(--card)] hover:shadow-2xl hover:shadow-black/10 dark:hover:shadow-black/30"
+        }`}
     >
       {!disabled && (
         <div

@@ -1,6 +1,8 @@
 import Link from "next/link";
+import DeleteProjectButton from "@/components/admin/DeleteProjectButton";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+
 
 export default async function AdminProjectsPage() {
   const supabase = await createSupabaseServerClient();
@@ -196,13 +198,7 @@ export default async function AdminProjectsPage() {
                           Edit
                         </Link>
 
-                        <button
-                          type="button"
-                          disabled
-                          className="cursor-not-allowed rounded-xl border border-red-500/20 px-4 py-2.5 text-xs font-bold text-red-500 opacity-40"
-                        >
-                          Delete
-                        </button>
+                        <DeleteProjectButton projectId={project.id} />
                       </div>
                     </div>
                   </article>
