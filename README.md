@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Amir Suhail — Developer Portfolio
 
-## Getting Started
+A modern, responsive and dynamic developer portfolio built with **Next.js, TypeScript, Tailwind CSS and Supabase**.
 
-First, run the development server:
+The portfolio showcases my projects, technical skills, professional experience, education and client work through a clean and modern interface with **Dark Mode / Light Mode** support.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌐 Live Website
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Portfolio:**  
+https://amir-portfolio-ashy.vercel.app/
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✨ Features
 
-To learn more about Next.js, take a look at the following resources:
+- Modern and responsive portfolio design
+- Dark Mode / Light Mode
+- Dynamic profile information
+- Dynamic skills management
+- Dynamic project management
+- Project categories / types
+- Project images
+- Live project URLs
+- GitHub project URLs
+- Featured projects
+- Education management
+- Professional experience management
+- Resume management
+- Admin authentication
+- Secure admin dashboard
+- Supabase database integration
+- Supabase Storage for images and resume
+- Responsive desktop and mobile layout
+- SEO configuration
+- Sitemap and robots configuration
+- Google Search Console verification
+- Contact form
+- Social media integration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Tech Stack
 
-## Deploy on Vercel
+### Frontend
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Next Themes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Backend / Database
+
+- Next.js Server Components
+- Next.js API / Server functionality
+- Supabase
+- PostgreSQL
+- Supabase Authentication
+- Supabase Storage
+- Row Level Security (RLS)
+
+### Deployment
+
+- Vercel
+- GitHub
+
+---
+
+## 📁 Project Structure
+
+```text
+amir-portfolio/
+│
+├── app/
+│   ├── admin/
+│   │   ├── education/
+│   │   ├── experience/
+│   │   ├── forgot-password/
+│   │   ├── login/
+│   │   ├── profile/
+│   │   ├── projects/
+│   │   ├── reset-password/
+│   │   ├── skills/
+│   │   └── page.tsx
+│   │
+│   ├── api/
+│   │
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── robots.ts
+│   └── sitemap.ts
+│
+├── components/
+│   ├── admin/
+│   ├── About.tsx
+│   ├── Contact.tsx
+│   ├── ContactForm.tsx
+│   ├── Experience.tsx
+│   ├── Footer.tsx
+│   ├── Hero.tsx
+│   ├── Navbar.tsx
+│   ├── Projects.tsx
+│   ├── Skills.tsx
+│   └── ...
+│
+├── lib/
+│   ├── supabase.ts
+│   └── supabase-server.ts
+│
+├── public/
+│   ├── icons/
+│   └── ...
+│
+├── .env.local
+├── middleware.ts
+├── next.config.ts
+├── package.json
+└── README.md
