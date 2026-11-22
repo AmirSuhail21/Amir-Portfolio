@@ -1,4 +1,3 @@
-
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -10,17 +9,6 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/portfolio/**",
       },
     ],
-  },
-
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        destination:
-          "https://amir-suhail-portfolio.vercel.app/:path*",
-        permanent: true,
-      },
-    ];
   },
 };
 
