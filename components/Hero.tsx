@@ -58,9 +58,9 @@ export default async function Hero() {
             {profile.role}
           </h2>
 
-          {/* Bio */}
+          {/* Hero Bio */}
           <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
-            {profile.bio}
+            {profile.hero_bio || profile.bio}
           </p>
 
           {/* CTA */}

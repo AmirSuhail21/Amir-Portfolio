@@ -48,6 +48,12 @@ export const metadata: Metadata = {
     "Backend Developer",
     "Freelance Web Developer",
     "Web Development Portfolio",
+    "Amir Suhail Portfolio",
+    "Amir Portfolio",
+    "Suhail Portfolio",
+    "Amir Suhail Web Developer",
+    "Full-Stack Developer Amir Suhail",
+    "Personal Portfolio",
   ],
 
   authors: [

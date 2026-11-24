@@ -10,6 +10,8 @@ type Profile = {
   role: string;
   short_role: string | null;
   bio: string | null;
+  hero_bio: string | null;
+  about_bio: string | null;
   location: string | null;
   profile_image: string | null;
   resume_url: string | null;
@@ -29,7 +31,13 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
   const [name, setName] = useState(profile?.name ?? "");
   const [role, setRole] = useState(profile?.role ?? "");
   const [shortRole, setShortRole] = useState(profile?.short_role ?? "");
-  const [bio, setBio] = useState(profile?.bio ?? "");
+  const [heroBio, setHeroBio] = useState(
+    profile?.hero_bio ?? profile?.bio ?? ""
+  );
+
+  const [aboutBio, setAboutBio] = useState(
+    profile?.about_bio ?? profile?.bio ?? ""
+  );
   const [location, setLocation] = useState(profile?.location ?? "");
   const [email, setEmail] = useState(profile?.email ?? "");
   const [github, setGithub] = useState(profile?.github ?? "");
@@ -268,7 +276,8 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
         name,
         role,
         short_role: shortRole || null,
-        bio: bio || null,
+        hero_bio: heroBio || null,
+        about_bio: aboutBio || null,
         location: location || null,
         email: email || null,
         github: github || null,
@@ -489,17 +498,34 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
 
         <div className="sm:col-span-2">
           <label
-            htmlFor="bio"
+            htmlFor="hero_bio"
             className="mb-2 block text-sm font-medium"
           >
-            Bio
+            Hero Bio
           </label>
 
           <textarea
-            id="bio"
-            value={bio}
-            onChange={(event) => setBio(event.target.value)}
-            placeholder="Write a short professional introduction..."
+            id="hero_bio"
+            value={heroBio}
+            onChange={(event) => setHeroBio(event.target.value)}
+            placeholder="Write a short introduction for the Hero section..."
+            rows={4}
+            className="w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+          />
+        </div>
+        <div className="sm:col-span-2">
+          <label
+            htmlFor="about_bio"
+            className="mb-2 block text-sm font-medium"
+          >
+            About Bio
+          </label>
+
+          <textarea
+            id="about_bio"
+            value={aboutBio}
+            onChange={(event) => setAboutBio(event.target.value)}
+            placeholder="Write a detailed introduction for the About section..."
             rows={6}
             className="w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
           />

@@ -5,7 +5,7 @@ export default async function About() {
 
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("name, role, short_role, bio, location")
+    .select("name, role, short_role, bio, about_bio, location")
     .limit(1)
     .maybeSingle();
 
@@ -60,8 +60,9 @@ export default async function About() {
               web applications that are practical, responsive and easy to use.
             </p>
 
+            {/* About Bio */}
             <p className="mt-6 text-base leading-8 text-[var(--muted)]">
-              {profile.bio}
+              {profile.about_bio || profile.bio}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-2">
