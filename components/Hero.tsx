@@ -1,6 +1,6 @@
 
 import { createSupabaseServerClient } from "@/lib/supabase-server";
-import { Github, Linkedin, Instagram, MapPin } from "lucide-react";
+import { Github, LinkedinIcon, Instagram, MapPin } from "lucide-react";
 
 export default async function Hero() {
   const supabase = await createSupabaseServerClient();
@@ -122,7 +122,7 @@ export default async function Hero() {
                 title="LinkedIn"
                 className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--muted)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
               >
-                <Linkedin size={20} />
+                <LinkedinIcon size={20} />
               </a>
             )}
 
