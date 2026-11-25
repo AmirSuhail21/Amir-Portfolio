@@ -1,4 +1,6 @@
+
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { Github, Linkedin, Instagram, MapPin } from "lucide-react";
 
 export default async function Hero() {
   const supabase = await createSupabaseServerClient();
@@ -30,6 +32,7 @@ export default async function Hero() {
       />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20 lg:px-8">
+
         {/* Left Content */}
         <div>
           {/* Availability */}
@@ -81,6 +84,7 @@ export default async function Hero() {
             >
               Let&apos;s Talk
             </a>
+
             {profile.resume_url && (
               <a
                 href={profile.resume_url}
@@ -94,15 +98,18 @@ export default async function Hero() {
           </div>
 
           {/* Social / Location */}
-          <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+
             {profile.github && (
               <a
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-semibold text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
+                aria-label="GitHub"
+                title="GitHub"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--muted)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
               >
-                GitHub ↗
+                <Github size={20} />
               </a>
             )}
 
@@ -111,9 +118,11 @@ export default async function Hero() {
                 href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-semibold text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
+                aria-label="LinkedIn"
+                title="LinkedIn"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--muted)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
               >
-                LinkedIn ↗
+                <Linkedin size={20} />
               </a>
             )}
 
@@ -122,22 +131,27 @@ export default async function Hero() {
                 href={profile.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-semibold text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
+                aria-label="Instagram"
+                title="Instagram"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--muted)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
               >
-                Instagram ↗
+                <Instagram size={20} />
               </a>
             )}
 
             {profile.location && (
-              <span className="text-sm font-medium text-[var(--muted)]">
-                📍 {profile.location}
+              <span className="ml-2 flex items-center gap-2 text-sm font-medium text-[var(--muted)]">
+                <MapPin size={17} />
+                {profile.location}
               </span>
             )}
+
           </div>
         </div>
 
         {/* Profile Image */}
         <div className="relative mx-auto w-full max-w-md lg:ml-auto">
+
           {/* Decorative shapes */}
           <div
             aria-hidden="true"
@@ -191,6 +205,7 @@ export default async function Hero() {
             </div>
           )}
         </div>
+
       </div>
     </section>
   );
